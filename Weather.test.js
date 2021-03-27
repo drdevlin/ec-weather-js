@@ -48,7 +48,6 @@ describe('Weather', () => {
       }
 
       const weather = new Weather(fetchedData);
-      console.log(weather._convert(fetchedData));
 
       expect(weather._convert(fetchedData)).toMatchObject(expected);
     });
