@@ -5,7 +5,7 @@ class Weather {
     if (typeof fetchedXMLWeatherData !== 'string') throw new TypeError('Argument must be a string.');
 
     this._originalXML = fetchedXMLWeatherData;
-    this._data = xml2js(fetchedXMLWeatherData);
+    this._data = this._convert(this._originalXML);
   }
 
   _convert(originalXML) {
