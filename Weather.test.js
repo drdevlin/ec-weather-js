@@ -22,6 +22,13 @@ describe('Weather', () => {
       expect(numberAttempt).toThrow();
       expect(arrayAttempt).toThrow();
       expect(objectAttempt).toThrow();
+    });
+    it('converts and stores weather data as an object', () => {
+      const fetchedData = "<?xml version='1.0' encoding='ISO-8859-1'?>";
+
+      const weather = new Weather(fetchedData);
+
+      expect(weather._data).toBeInstanceOf(Object);
     })
   })
 })
