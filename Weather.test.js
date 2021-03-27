@@ -24,11 +24,23 @@ describe('Weather', () => {
       expect(objectAttempt).toThrow();
     });
     it('converts and stores weather data as an object', () => {
-      const fetchedData = "<?xml version='1.0' encoding='ISO-8859-1'?>";
+      const fetchedData = `
+      <?xml version='1.0' encoding='ISO-8859-1'?>
+      <siteData>
+      <one attr1='foo' attr2='bar'>baz</one>
+      <two>bing</two>
+      <two>bang</two>
+      </siteData>
+      `;
+
+      const expected = {
+        one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
+        two: [ { value: 'bing' }, { value: 'bang' } ]
+      }
 
       const weather = new Weather(fetchedData);
 
-      expect(weather._data).toBeInstanceOf(Object);
+      expect(weather._data).toMatchObject(expected);
     });
   });
   describe('_convert(originalXML)', () => {
