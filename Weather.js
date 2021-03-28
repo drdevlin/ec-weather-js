@@ -15,6 +15,8 @@ class Weather {
     const converted = xml2js(originalXML, { compact: true });
 
     const mainData = converted.siteData;
+    delete mainData.license;
+    delete mainData.dateTime;
 
     return mainData;
   }
