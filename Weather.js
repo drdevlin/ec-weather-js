@@ -18,6 +18,7 @@ class Weather {
     const mainData = converted.siteData;
     delete mainData.license;
     delete mainData.dateTime;
+    delete mainData._attributes;
 
     return mainData;
   }

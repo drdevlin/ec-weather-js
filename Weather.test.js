@@ -81,7 +81,7 @@ describe('Weather', () => {
     it('converts original fetched XML data to js object and extracts main data', () => {
       const fetchedData = `
       <?xml version='1.0' encoding='ISO-8859-1'?>
-      <siteData>
+      <siteData xmlns:xsi="bing" xsi:noNamespaceSchemaLocation="bong">
       <license>text</license>
       <dateTime></dateTime>
       <dateTime></dateTime>
@@ -102,6 +102,7 @@ describe('Weather', () => {
       expect(converted).toMatchObject(expected);
       expect(converted.hasOwnProperty('license')).toBeFalsy();
       expect(converted.hasOwnProperty('dateTime')).toBeFalsy();
+      expect(converted.hasOwnProperty('_attributes')).toBeFalsy();
     });
   });
   describe('_normalize(convertedObject)', () => {
