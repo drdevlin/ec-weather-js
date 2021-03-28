@@ -64,6 +64,26 @@ class Weather {
       return normalizedObject.map(el => this._simplify(el));
     }
   }
+
+  _makeForecastMap(simplifiedObject) {
+    const result = { ...simplifiedObject };
+    const forecast = new Map();
+    result.forecastGroup.forecast.forEach(el => {
+      const copy = { ...el };
+      delete copy.period;
+      forecast.set(el.period.value, copy);
+    });
+    result.regionalNormals = result.forecastGroup.regionalNormals;
+    delete result.forecastGroup;
+    result.hourlyForecastGroup.hourlyForecast.forEach(el => {
+      const copy = { ...el };
+      delete copy.dateTimeUTC;
+      forecast.set(el.dateTimeUTC, copy);
+    });
+    delete result.hourlyForecastGroup;
+    result.forecast = forecast;
+    return result;
+  }
 }
 
 module.exports = Weather;
