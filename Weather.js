@@ -7,7 +7,8 @@ class Weather {
     this._originalXML = fetchedXMLWeatherData;
     const converted = this._convert(this._originalXML);
     const normalized = this._normalize(converted);
-    this._data = this._simplify(normalized);
+    const simplified = this._simplify(normalized);
+    this._data = this._makeForecastMap(simplified);
   }
   
   // private
