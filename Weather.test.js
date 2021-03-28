@@ -23,7 +23,7 @@ describe('Weather', () => {
       expect(arrayAttempt).toThrow();
       expect(objectAttempt).toThrow();
     });
-    it('converts and stores weather data as an object', () => {
+    it('converts, parses, and stores weather data as an object', () => {
       const fetchedData = `
       <?xml version='1.0' encoding='ISO-8859-1'?>
       <siteData>
@@ -44,7 +44,7 @@ describe('Weather', () => {
     });
   });
   describe('_convert(originalXML)', () => {
-    it('converts and organizes original fetched data', () => {
+    it('converts original fetched XML data to js object', () => {
       const fetchedData = `
       <?xml version='1.0' encoding='ISO-8859-1'?>
       <siteData>
@@ -55,8 +55,8 @@ describe('Weather', () => {
       `;
 
       const expected = {
-        one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
-        two: [ { value: 'bing' }, { value: 'bang' } ]
+        one: { _attributes: { attr1: 'foo', attr2: 'bar' }, _text: 'baz' },
+        two: [ { _text: 'bing' }, { _text: 'bang' } ]
       }
 
       const weather = new Weather(fetchedData);
@@ -64,11 +64,11 @@ describe('Weather', () => {
       expect(weather._convert(fetchedData)).toMatchObject(expected);
     });
   });
-  describe('_organize(convertedObject)', () => {
-    it('recursively organizes objects converted by xml2js', () => {
+  describe('_simplify(convertedObject)', () => {
+    it('removes "_attributes" prop, renames "_text" to "value", removes extraneous objects', () => {
       const convertedObject = {
         one: { _attributes: { attr1: 'foo', attr2: 'bar' }, _text: 'baz' },
-        two: [ { _text: 'bing' }, { _text: 'bang' } ]
+        two: [ { _text: 'bing' }, { _text: 'bang' } ],
       };
 
       const expected = {
@@ -78,7 +78,7 @@ describe('Weather', () => {
 
       const weather = new Weather(testdata);
 
-      expect(weather._organize(convertedObject)).toMatchObject(expected);
+      expect(weather._simplify(convertedObject)).toMatchObject(expected);
     })
   })
 })
