@@ -27,17 +27,49 @@ describe('Weather', () => {
       const fetchedData = `
       <?xml version='1.0' encoding='ISO-8859-1'?>
       <siteData>
+      <license>text</license>
+      <dateTime></dateTime>
+      <dateTime></dateTime>
       <one attr1='foo' attr2='bar'>baz</one>
       <two>bing</two>
       <two>bang</two>
       <three><four></four></three>
+      <forecastGroup>
+        <regionalNormals>
+          <textSummary>text</textSummary>
+        </regionalNormals>
+        <forecast>
+          <period textForecastName="Today">Wednesday</period>
+          <textSummary>text</textSummary>
+        </forecast>
+        <forecast>
+          <period textForecastName="Tomorrow">Thursday</period>
+          <textSummary>text</textSummary>
+        </forecast>
+      </forecastGroup>
+      <hourlyForecastGroup>
+        <hourlyForecast dateTimeUTC="202101280300">
+          <condition>Rain</condition>
+        </hourlyForecast>
+        <hourlyForecast dateTimeUTC="202101280400">
+          <condition>Sunny</condition>
+        </hourlyForecast>
+      </hourlyForecastGroup>
       </siteData>
       `;
+
+      const forecastMap = new Map();
+      forecastMap.set('Wednesday', { textSummary: 'text' });
+      forecastMap.set('Thursday', { textSummary: 'text' });
+      forecastMap.set('202101280300', { condition: 'Rain' });
+      forecastMap.set('202101280400', { condition: 'Sunny' });
 
       const expected = {
         one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
         two: [ 'bing', 'bang' ],
-        three: { four: null }
+        three: { four: null },
+        regionalNormals: { textSummary: 'text' },
+        forecast: forecastMap
       }
 
       const weather = new Weather(fetchedData);
@@ -64,7 +96,7 @@ describe('Weather', () => {
         two: [ { _text: 'bing' }, { _text: 'bang' } ]
       }
 
-      const weather = new Weather(fetchedData);
+      const weather = new Weather(testdata);
       const converted = weather._convert(fetchedData);
 
       expect(converted).toMatchObject(expected);
