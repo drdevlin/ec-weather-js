@@ -100,6 +100,40 @@ describe('Weather', () => {
       const weather = new Weather(testdata);
 
       expect(weather._simplify(normalizedObject)).toMatchObject(expected);
+    });
+  });
+  describe('_makeForecastMap(simplifiedObject)', () => {
+    it('restructures forecasts into a Map', () => {
+      const simplifiedObject = {
+        forecastGroup: {
+          regionalNormals: { regional: 'normals' },
+          forecast: [ 
+            { period: { value: 'foo' }, otherProp: 'bing' },
+            { period: { value: 'bar' }, otherProp: 'bong' }
+          ]
+        },
+        hourlyForecastGroup: {
+          hourlyForecast: [
+            { dateTimeUTC: 'baz', otherProp: 'bang' },
+            { dateTimeUTC: 'goo', otherProp: 'clang' }
+          ]
+        }
+      }
+
+      const expectedForecastMap = new Map();
+      expectedForecastMap.set('foo', { otherProp: 'bing' });
+      expectedForecastMap.set('bar', { otherProp: 'bong' });
+      expectedForecastMap.set('baz', { otherProp: 'bang' });
+      expectedForecastMap.set('goo', { otherProp: 'clang' });
+
+      const expectedResult = {
+        regionalNormals: { regional: 'normals' },
+        forecast: expectedForecastMap
+      }
+
+      const weather = new Weather(testdata);
+
+      expect(weather._makeForecastMap(simplifiedObject)).toMatchObject(expectedResult);
     })
   })
 })
