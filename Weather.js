@@ -6,7 +6,7 @@ class Weather {
 
     this._originalXML = fetchedXMLWeatherData;
     const converted = this._convert(this._originalXML);
-    this._data = this._simplify(converted);
+    this._data = this._normalize(converted);
   }
   
   // private
@@ -18,7 +18,7 @@ class Weather {
     return mainData;
   }
 
-  _simplify(convertedObject) {
+  _normalize(convertedObject) {
     if (!Array.isArray(convertedObject)) {
       // base case
       const copy = { ...convertedObject };
@@ -33,12 +33,12 @@ class Weather {
       }
       // recurse over other objects, including arrays
       for (const prop in copy) {
-        if (typeof copy[prop] === 'object') copy[prop] = this._simplify(copy[prop]);
+        if (typeof copy[prop] === 'object') copy[prop] = this._normalize(copy[prop]);
       }
       return { ...attributesAndValue, ...copy };
     } else {
       // recurse over objects in array
-      return convertedObject.map(el => this._simplify(el));
+      return convertedObject.map(el => this._normalize(el));
     }
   }
 }

@@ -64,8 +64,8 @@ describe('Weather', () => {
       expect(weather._convert(fetchedData)).toMatchObject(expected);
     });
   });
-  describe('_simplify(convertedObject)', () => {
-    it('removes "_attributes" prop, renames "_text" to "value", removes extraneous objects', () => {
+  describe('_normalize(convertedObject)', () => {
+    it('removes "_attributes" prop and renames "_text" to "value"', () => {
       const convertedObject = {
         one: { _attributes: { attr1: 'foo', attr2: 'bar' }, _text: 'baz' },
         two: [ { _text: 'bing' }, { _text: 'bang' } ],
@@ -78,7 +78,7 @@ describe('Weather', () => {
 
       const weather = new Weather(testdata);
 
-      expect(weather._simplify(convertedObject)).toMatchObject(expected);
+      expect(weather._normalize(convertedObject)).toMatchObject(expected);
     })
   })
 })
