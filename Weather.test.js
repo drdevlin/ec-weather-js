@@ -30,12 +30,14 @@ describe('Weather', () => {
       <one attr1='foo' attr2='bar'>baz</one>
       <two>bing</two>
       <two>bang</two>
+      <three><four></four></three>
       </siteData>
       `;
 
       const expected = {
         one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
-        two: [ { value: 'bing' }, { value: 'bang' } ]
+        two: [ 'bing', 'bang' ],
+        three: { four: null }
       }
 
       const weather = new Weather(fetchedData);
@@ -79,6 +81,25 @@ describe('Weather', () => {
       const weather = new Weather(testdata);
 
       expect(weather._normalize(convertedObject)).toMatchObject(expected);
+    });
+  });
+  describe('_simplify(normalizedObject)', () => {
+    it('removes extraneous objects', () => {
+      const normalizedObject = {
+        one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
+        two: [ { value: 'bing' }, { value: 'bang' } ],
+        three: { four: {} }
+      };
+
+      const expected = {
+        one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
+        two: [ 'bing', 'bang' ],
+        three: { four: null }
+      }
+
+      const weather = new Weather(testdata);
+
+      expect(weather._simplify(normalizedObject)).toMatchObject(expected);
     })
   })
 })
