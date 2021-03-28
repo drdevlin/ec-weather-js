@@ -46,10 +46,13 @@ describe('Weather', () => {
     });
   });
   describe('_convert(originalXML)', () => {
-    it('converts original fetched XML data to js object', () => {
+    it('converts original fetched XML data to js object and extracts main data', () => {
       const fetchedData = `
       <?xml version='1.0' encoding='ISO-8859-1'?>
       <siteData>
+      <license>text</license>
+      <dateTime></dateTime>
+      <dateTime></dateTime>
       <one attr1='foo' attr2='bar'>baz</one>
       <two>bing</two>
       <two>bang</two>
@@ -62,8 +65,11 @@ describe('Weather', () => {
       }
 
       const weather = new Weather(fetchedData);
+      const converted = weather._convert(fetchedData);
 
-      expect(weather._convert(fetchedData)).toMatchObject(expected);
+      expect(converted).toMatchObject(expected);
+      expect(converted.hasOwnProperty('license')).toBeFalsy();
+      expect(converted.hasOwnProperty('dateTime')).toBeFalsy();
     });
   });
   describe('_normalize(convertedObject)', () => {
