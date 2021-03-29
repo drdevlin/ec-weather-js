@@ -122,7 +122,7 @@ class Parse {
     result.forecastGroup.forecast.forEach(el => {
       const copy = { ...el };
       delete copy.period;
-      forecast.set(el.period.value, copy);
+      forecast.set(el.period.value.toLowerCase(), copy);
     });
     result.regionalNormals = result.forecastGroup.regionalNormals;
     delete result.forecastGroup;
