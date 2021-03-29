@@ -92,4 +92,11 @@ describe('Weather', () => {
       expect(weather.all).toMatchObject(expected);
     });
   });
+  describe('get raw()', () => {
+    it('returns the original XML data', () => {
+      const weather = new Weather(testdata);
+
+      expect(weather.raw).toStrictEqual(testdata);
+    });
+  });
 });
