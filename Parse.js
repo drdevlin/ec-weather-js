@@ -1,10 +1,33 @@
+/**
+ * A collection of methods for parsing the raw XML weather data from Environment Canada.
+ * This is a private module, meant only to be used internally by the Weather module.
+ * @module
+ */
+
 const { xml2js } = require('xml-js');
 
+/**
+ * @classdesc
+ * An object that converts, normalizes, simplifies, or restructures the data contained within it.
+ * An explanation of these methods is provided below.
+ * The methods return a new Parse instance to enable chaining.
+ */
 class Parse {
+
+  /**
+   * @constructor
+   * Stores the data given to it.
+   * @param {(string|<Parse>)} data Either the raw XML weather data or the result of a previous method.
+   */
   constructor(data) {
     this.data = data;
   }
 
+  /**
+   * Converts raw XML weather data to a javascript object and removes some useless properties.
+   * The internal 'data' property should be a string.
+   * @returns {<Parse>}
+   */
   convert() {
     const converted = xml2js(this.data, { compact: true });
 
@@ -16,6 +39,12 @@ class Parse {
     return new Parse(mainData);
   }
 
+  /**
+   * Removes some of the quirks of the xml2js conversion.
+   * Recurses through the object, flattening '_attributes' to its parent object and renaming '_text' to 'value'.
+   * The internal 'data' property must be the result of convert().
+   * @returns {<Parse>}
+   */
   normalize() {
     const recurse = (data) => {
       if (!Array.isArray(data)) {
@@ -44,6 +73,13 @@ class Parse {
     return new Parse(result);
   }
 
+  /**
+   * Removes some extraneous objects.
+   * Recurses through the object, flattening any object whose sole property is 'value' and 
+   * changing empty objects to null values.
+   * The internal 'data' property must be the result of normalize().
+   * @returns {<Parse>}
+   */
   simplify() {
     const recurse = (data) => {
       if (!Array.isArray(data)) {
@@ -70,6 +106,16 @@ class Parse {
     return new Parse(result);
   }
 
+  /**
+   * Builds a Map object of the forecast data.
+   * The weekly forecast and hourly forecast are restructured into a single Map object called 'forecast',
+   * which is placed at the root. This makes the forecast data accessible in the following way:
+   * the forecast for a day is accessed by the name of the day of the week;
+   * the forecast for an hour is accessed by a UTC timestamp.
+   * The old structure is deleted, and 'regionalNormals' is moved to the root.
+   * The internal 'data' property must be the result of simplify().
+   * @returns {<Parse>}
+   */
   restructure() {
     const result = { ...this.data };
     const forecast = new Map();
