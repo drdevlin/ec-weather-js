@@ -7,6 +7,10 @@ class Weather {
     this._originalXML = fetchedXMLWeatherData;
     this._data = new Parse(this._originalXML).convert().normalize().simplify().restructure().data;
   }
+
+  get all() {
+    return this._data;
+  }
 }
 
 module.exports = Weather;
