@@ -11,6 +11,10 @@ class Weather {
   get all() {
     return this._data;
   }
+
+  get raw() {
+    return this._originalXML;
+  }
 }
 
 module.exports = Weather;
