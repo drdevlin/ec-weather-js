@@ -36,8 +36,8 @@ const fetchedData = `
 `;
 
 const forecastMap = new Map();
-forecastMap.set('Wednesday', { textSummary: 'text' });
-forecastMap.set('Thursday', { textSummary: 'text' });
+forecastMap.set('wednesday', { textSummary: 'text' });
+forecastMap.set('thursday', { textSummary: 'text' });
 forecastMap.set('202101280300', { condition: 'Rain' });
 forecastMap.set('202101280400', { condition: 'Sunny' });
 
@@ -97,6 +97,131 @@ describe('Weather', () => {
       const weather = new Weather(testdata);
 
       expect(weather.raw).toStrictEqual(testdata);
+    });
+  });
+  describe('forecast(date)', () => {
+    describe('when passed a string', () => {
+      it('returns all forecast data for a given day of the week', () => {
+        const weather = new Weather(testdata);
+  
+        const results = weather.forecast('FrIdaY');
+        const expected = {
+          textSummary: 'A mix of sun and cloud. High minus 7.',
+          cloudPrecip: { textSummary: 'A mix of sun and cloud.' },
+          abbreviatedForecast: {
+            iconCode: { format: 'gif', value: '02' },
+            pop: { units: '%' },
+            textSummary: 'A mix of sun and cloud'
+          },
+          temperatures: {
+            textSummary: 'High minus 7.',
+            temperature: { unitType: 'metric', units: 'C', class: 'high', value: '-7' }
+          },
+          winds: null,
+          humidex: null,
+          precipitation: { textSummary: null, precipType: { start: '', end: '' } },
+          relativeHumidity: { units: '%', value: '60' }
+        };
+  
+        expect(results).toMatchObject(expected);
+      });
+    });
+    describe('when passed a Date object within the hourly forecast', () => {
+      it('returns all forecast data for the given hour', () => {
+        const weather = new Weather(testdata);
+        const date = new Date(2021, 0, 27, 15, 12);
+
+        const results = weather.forecast(date);
+        const expected = {
+          condition: 'Cloudy',
+          iconCode: { format: 'png', value: '10' },
+          temperature: { unitType: 'metric', units: 'C', value: '-4' },
+          lop: { category: 'Low', units: '%', value: '10' },
+          windChill: { unitType: 'metric', value: '-10' },
+          humidex: { unitType: 'metric' },
+          wind: {
+            speed: { unitType: 'metric', units: 'km/h', value: '20' },
+            direction: { windDirFull: 'Northwest', value: 'NW' },
+            gust: { unitType: 'metric', units: 'km/h' }
+          }
+        }
+        expect(results).toMatchObject(expected);
+      });
+    });
+    describe('when passed a Date object outside hourly but within weekly forecast', () => {
+      it('returns all forecast data for the day/night', () => {
+        const weather = new Weather(testdata);
+        const dateDaytime = new Date(2021, 0, 30, 12, 12);
+        const dateNighttime = new Date(2021, 0, 30, 23, 12);
+
+        const expectedDaytime = {
+          textSummary: 'A mix of sun and cloud. High minus 6.',
+          cloudPrecip: { textSummary: 'A mix of sun and cloud.' },
+          abbreviatedForecast: {
+            iconCode: { format: 'gif', value: '02' },
+            pop: { units: '%' },
+            textSummary: 'A mix of sun and cloud'
+          },
+          temperatures: {
+            textSummary: 'High minus 6.',
+            temperature: { unitType: 'metric', units: 'C', class: 'high', value: '-6' }
+          },
+          winds: null,
+          humidex: null,
+          precipitation: { textSummary: null, precipType: { start: '', end: '' } },
+          relativeHumidity: { units: '%', value: '55' }
+        };
+        const expectedNighttime = {
+          textSummary: 'Cloudy. Low minus 9.',
+          cloudPrecip: { textSummary: 'Cloudy.' },
+          abbreviatedForecast: {
+            iconCode: { format: 'gif', value: '10' },
+            pop: { units: '%' },
+            textSummary: 'Cloudy'
+          },
+          temperatures: {
+            textSummary: 'Low minus 9.',
+            temperature: { unitType: 'metric', units: 'C', class: 'low', value: '-9' }
+          },
+          winds: null,
+          humidex: null,
+          precipitation: { textSummary: null, precipType: { start: '', end: '' } },
+          relativeHumidity: { units: '%', value: '80' }
+        };
+        
+        const resultsDaytime = weather.forecast(dateDaytime);
+        const resultsNighttime = weather.forecast(dateNighttime);
+        
+        expect(resultsDaytime).toMatchObject(expectedDaytime);
+        expect(resultsNighttime).toMatchObject(expectedNighttime);
+      });
+    });
+    describe('when passed a date outside the range of the data', () => {
+      it('returns undefined', () => {
+        const weather = new Weather(testdata);
+        const date = new Date(2022, 0, 1, 1, 1);
+
+        expect(weather.forecast(date)).toBeUndefined();
+      });
+    });
+    describe('when passed something other than a string or Date object', () => {
+      it('throws an Error', () => {
+        const weather = new Weather(testdata);
+
+        const numberAttempt = () => {
+          weather.forecast(99);
+        }
+        const arrayAttempt = () => {
+          weather.forecast([ 9, 9 ]);
+        }
+        const objectAttempt = () => {
+          weather.forecast({ '9': 9 });
+        }
+  
+        expect(numberAttempt).toThrow();
+        expect(arrayAttempt).toThrow();
+        expect(objectAttempt).toThrow();
+      });
     });
   });
 });
