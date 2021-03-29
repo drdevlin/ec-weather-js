@@ -38,6 +38,10 @@ class Weather {
     return this._originalXML;
   }
 
+  get current() {
+    return this._data.currentConditions;
+  }
+
   forecast(date) {
     if (typeof date !== 'string' && !(date instanceof Date)) throw new TypeError('Argument must be a string or Date instance');
     const forecastData = this._data.forecast;
