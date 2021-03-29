@@ -11,6 +11,9 @@ const fetchedData = `
   <two>bing</two>
   <two>bang</two>
   <three><four></four></three>
+  <currentConditions>
+    <foo>bar</foo>
+  </currentConditions>
   <forecastGroup>
     <regionalNormals>
       <textSummary>text</textSummary>
@@ -42,6 +45,7 @@ forecastMap.set('202101280300', { condition: 'Rain' });
 forecastMap.set('202101280400', { condition: 'Sunny' });
 
 describe('Weather', () => {
+
   describe('constructor(fetchedXMLWeatherData)', () => {
     it('stores the original fetched weather data', () => {
       const weather = new Weather(testdata);
@@ -77,6 +81,7 @@ describe('Weather', () => {
       expect(weather._data).toMatchObject(expected);
     });
   });
+
   describe('get all()', () => {
     it('returns all data parsed', () => {
       const expected = {
@@ -92,6 +97,7 @@ describe('Weather', () => {
       expect(weather.all).toMatchObject(expected);
     });
   });
+
   describe('get raw()', () => {
     it('returns the original XML data', () => {
       const weather = new Weather(testdata);
@@ -99,6 +105,17 @@ describe('Weather', () => {
       expect(weather.raw).toStrictEqual(testdata);
     });
   });
+
+  describe('get current()', () => {
+    it('returns all current weather conditions', () => {
+      const weather = new Weather(fetchedData);
+
+      const expected = { foo: 'bar' };
+
+      expect(weather.current).toMatchObject(expected);
+    })
+  })
+
   describe('forecast(date)', () => {
     describe('when passed a string', () => {
       it('returns all forecast data for a given day of the week', () => {
