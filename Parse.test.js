@@ -41,7 +41,7 @@ describe('Parse(data)', () => {
 
       const attempt = () => {
         parse.convert();
-      }
+      };
       
       expect(attempt).toThrow();
     });
@@ -50,11 +50,11 @@ describe('Parse(data)', () => {
 
       const attempt = () => {
         parse.convert();
-      }
+      };
 
       expect(attempt).toThrow(TypeError);
       expect(attempt).toThrow(/weather data/i);
-    })
+    });
   });
   describe('normalize()', () => {
     it('removes "_attributes" prop and renames "_text" to "value"', () => {
@@ -124,6 +124,6 @@ describe('Parse(data)', () => {
       const parse = new Parse(input);
 
       expect(parse.restructure(input)).toMatchObject(expectedResult);
-    })
-  })
-})
+    });
+  });
+});

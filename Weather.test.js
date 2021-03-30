@@ -59,7 +59,7 @@ describe('Weather', () => {
         three: { four: null },
         regionalNormals: { textSummary: 'text' },
         forecast: forecastMap
-      }
+      };
 
       const weather = new Weather(fetchedData);
 
@@ -68,7 +68,7 @@ describe('Weather', () => {
     it('throws an informative Error if fetched data is falsy', () => {
       const attempt = () => {
         const weather = new Weather();
-      }
+      };
       
       expect(attempt).toThrow(TypeError);
       expect(attempt).toThrow(/constructor/i);
@@ -76,13 +76,13 @@ describe('Weather', () => {
     it('throws an informative Error if fetched data is not a string', () => {
       const numberAttempt = () => {
         const weather = new Weather(99);
-      }
+      };
       const arrayAttempt = () => {
         const weather = new Weather([ 9, 9 ]);
-      }
+      };
       const objectAttempt = () => {
         const weather = new Weather({ '9': 9 });
-      }
+      };
       
       expect(numberAttempt).toThrow(TypeError);
       expect(numberAttempt).toThrow(/string/i);
@@ -99,7 +99,7 @@ describe('Weather', () => {
         three: { four: null },
         regionalNormals: { textSummary: 'text' },
         forecast: forecastMap
-      }
+      };
 
       const weather = new Weather(fetchedData);
 
@@ -122,8 +122,8 @@ describe('Weather', () => {
       const expected = { foo: 'bar' };
 
       expect(weather.current).toMatchObject(expected);
-    })
-  })
+    });
+  });
 
   describe('forecast(date)', () => {
     describe('when passed a string', () => {
@@ -170,7 +170,7 @@ describe('Weather', () => {
             direction: { windDirFull: 'Northwest', value: 'NW' },
             gust: { unitType: 'metric', units: 'km/h' }
           }
-        }
+        };
         expect(results).toMatchObject(expected);
       });
     });
@@ -236,13 +236,13 @@ describe('Weather', () => {
 
         const numberAttempt = () => {
           weather.forecast(99);
-        }
+        };
         const arrayAttempt = () => {
           weather.forecast([ 9, 9 ]);
-        }
+        };
         const objectAttempt = () => {
           weather.forecast({ '9': 9 });
-        }
+        };
   
         expect(numberAttempt).toThrow();
         expect(arrayAttempt).toThrow();

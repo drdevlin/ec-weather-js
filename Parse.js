@@ -70,7 +70,7 @@ class Parse {
         // recurse over objects in array
         return data.map(el => recurse(el));
       }
-    }
+    };
     const result = recurse(this.data);
     return new Parse(result);
   }
@@ -103,7 +103,7 @@ class Parse {
         // recurse over objects in array
         return data.map(el => recurse(el));
       }
-    }
+    };
     const result = recurse(this.data);
     return new Parse(result);
   }
