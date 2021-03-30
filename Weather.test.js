@@ -250,4 +250,24 @@ describe('Weather', () => {
       });
     });
   });
+  describe('_makeUTCTimestamp(date)', () => {
+    it('returns the corresponding UTC Timestamp of the given Date', () =>{
+      const weather = new Weather(testdata);
+      const date = new Date(Date.UTC(2011, 1, 1, 1, 1));
+
+      const expected = '201102010100';
+
+      expect(weather._makeUTCTimestamp(date)).toStrictEqual(expected);
+    });
+  });
+  describe('_getWeekDay(date)', () => {
+    it('returns the expanded weekday name of the date', () => {
+      const weather = new Weather(testdata);
+      const date = new Date(Date.UTC(2011, 1, 1, 1, 1));
+
+      const expected = 'tuesday';
+
+      expect(weather._getWeekDay(date)).toStrictEqual(expected);
+    });
+  });
 });
