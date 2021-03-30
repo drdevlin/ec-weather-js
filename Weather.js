@@ -67,9 +67,9 @@ class Weather {
     }
     
     if (date instanceof Date) {
-      const utcTimestamp = makeUTCTimestamp(date);
+      const utcTimestamp = this._makeUTCTimestamp(date);
 
-      // Retreive the value if the date stamp is a key
+      // Retreive the value if the timestamp is a key
       if (forecastData.has(utcTimestamp)) {
         return forecastData.get(utcTimestamp);
 
@@ -101,7 +101,7 @@ class Weather {
           const localDateHour = localDate.getUTCHours();
           // get the name of the day of the week
           // and if the hour is at night, add 'night'
-          const weekday = (localDateHour >= 6 && localDateHour < 18) ? getWeekDay(localDate) : getWeekDay(localDate) + ' night';
+          const weekday = (localDateHour >= 6 && localDateHour < 18) ? this._getWeekDay(localDate) : this._getWeekDay(localDate) + ' night';
           // retrieve the forecast for that day of the week.
           return forecastData.get(weekday);
         }
@@ -111,48 +111,48 @@ class Weather {
     // If the date given doesn't work for any of this, 
     // then there's no data for that date and the method with return undefined.
   }
-}
 
-/**
- * Helper function.
- * Turns a Date instance into a UTC Timestamp compatible with Environment Canada's weather data.
- * @param {<Date>} date The date to forecast.
- * @returns {string}    The UTC Timestamp.
- */
-function makeUTCTimestamp(date) {
-  const year = date.getUTCFullYear().toString();
-
-  let month = date.getUTCMonth() + 1;
-  month = month.toString();
-  if (month.length < 2) month = '0' + month;
-
-  let day = date.getUTCDate().toString();
-  if (day.length < 2) day = '0' + day;
-
-  let hour = date.getUTCHours().toString();
-  if (hour.length < 2) hour = '0' + hour;
-
-  return year + month + day + hour + '00';
-}
-
-/**
- * Helper function.
- * Expands the abbreviated weekday text returned from a Date object.
- * @param {<Date>} date The localized date to forecast.
- * @returns {string}    Full weekday name.
- */
-function getWeekDay(date) {
-  const partial = date.toUTCString().slice(0, 3);
-  const days = new Map([
-    [ 'sun', 'sunday' ],
-    [ 'mon', 'monday' ],
-    [ 'tue', 'tuesday' ],
-    [ 'wed', 'wednesday' ],
-    [ 'thu', 'thursday' ],
-    [ 'fri', 'friday' ],
-    [ 'sat', 'saturday' ]
-  ]);
-  return days.get(partial.toLowerCase());
+  /**
+   * Helper method.
+   * Turns a Date instance into a UTC Timestamp compatible with Environment Canada's weather data.
+   * @param {<Date>} date The date to forecast.
+   * @returns {string}    The UTC Timestamp.
+   */
+  _makeUTCTimestamp(date) {
+    const year = date.getUTCFullYear().toString();
+  
+    let month = date.getUTCMonth() + 1;
+    month = month.toString();
+    if (month.length < 2) month = '0' + month;
+  
+    let day = date.getUTCDate().toString();
+    if (day.length < 2) day = '0' + day;
+  
+    let hour = date.getUTCHours().toString();
+    if (hour.length < 2) hour = '0' + hour;
+  
+    return year + month + day + hour + '00';
+  }
+  
+  /**
+   * Helper method.
+   * Expands the abbreviated weekday text returned from a Date object.
+   * @param {<Date>} date The localized date to forecast.
+   * @returns {string}    Full weekday name.
+   */
+  _getWeekDay(date) {
+    const partial = date.toUTCString().slice(0, 3);
+    const days = new Map([
+      [ 'sun', 'sunday' ],
+      [ 'mon', 'monday' ],
+      [ 'tue', 'tuesday' ],
+      [ 'wed', 'wednesday' ],
+      [ 'thu', 'thursday' ],
+      [ 'fri', 'friday' ],
+      [ 'sat', 'saturday' ]
+    ]);
+    return days.get(partial.toLowerCase());
+  }
 }
 
 module.exports = Weather;
