@@ -8,6 +8,10 @@
   },
   "author": "Devlin Russell <drdevlin@fastmail.com> (http://devlinrussell.net)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drdevlin/ec-weather-js"
+  },
   "dependencies": {
     "xml-js": "^1.6.11"
   },
