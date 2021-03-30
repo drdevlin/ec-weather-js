@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --watchAll"
   },
-  "author": "Devlin Russell",
+  "author": "Devlin Russell <drdevlin@fastmail.com> (http://devlinrussell.net)",
   "license": "MIT",
   "dependencies": {
     "xml-js": "^1.6.11"
