@@ -18,7 +18,7 @@ class Weather {
    * @param {string} fetchedXMLWeatherData Raw XML weather data from Environment Canada.
    */
   constructor(fetchedXMLWeatherData) {
-    if (!fetchedXMLWeatherData) throw new TypeError('Constructor must be passed weather data from Environment Canada.')
+    if (!fetchedXMLWeatherData) throw new TypeError('Constructor must be passed weather data from Environment Canada.');
     if (typeof fetchedXMLWeatherData !== 'string') throw new TypeError('Argument must be a string.');
 
     this._originalXML = fetchedXMLWeatherData;
