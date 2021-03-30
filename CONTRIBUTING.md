@@ -2,7 +2,7 @@
 
 ## Feature Requests and Bugs
 
-Open an issue if you have any feature requests or you find bugs.
+Open an issue if you have any feature requests or find bugs.
 
 ## Pull Requests
 
