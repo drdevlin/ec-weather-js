@@ -36,6 +36,25 @@ describe('Parse(data)', () => {
       expect(converted.data.hasOwnProperty('dateTime')).toBeFalsy();
       expect(converted.data.hasOwnProperty('_attributes')).toBeFalsy();
     });
+    it('throws an error if the data is not XML', () => {
+      const parse = new Parse('foo');
+
+      const attempt = () => {
+        parse.convert();
+      }
+      
+      expect(attempt).toThrow();
+    });
+    it('throws informative error if the data is not weather data from Environment Canada', () => {
+      const parse = new Parse("<?xml version='1.0' encoding='ISO-8859-1'?>");
+
+      const attempt = () => {
+        parse.convert();
+      }
+
+      expect(attempt).toThrow(TypeError);
+      expect(attempt).toThrow(/weather data/i);
+    })
   });
   describe('normalize()', () => {
     it('removes "_attributes" prop and renames "_text" to "value"', () => {

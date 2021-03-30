@@ -52,21 +52,6 @@ describe('Weather', () => {
 
       expect(weather._originalXML).toStrictEqual(testdata);
     });
-    it('throws an Error if fetched data is not a string', () => {
-      const numberAttempt = () => {
-        const weather = new Weather(99);
-      }
-      const arrayAttempt = () => {
-        const weather = new Weather([ 9, 9 ]);
-      }
-      const objectAttempt = () => {
-        const weather = new Weather({ '9': 9 });
-      }
-
-      expect(numberAttempt).toThrow();
-      expect(arrayAttempt).toThrow();
-      expect(objectAttempt).toThrow();
-    });
     it('converts, parses, and stores weather data as an object', () => {
       const expected = {
         one: { attr1: 'foo', attr2: 'bar', value: 'baz' },
@@ -79,6 +64,30 @@ describe('Weather', () => {
       const weather = new Weather(fetchedData);
 
       expect(weather._data).toMatchObject(expected);
+    });
+    it('throws an informative Error if fetched data is falsy', () => {
+      const attempt = () => {
+        const weather = new Weather();
+      }
+      
+      expect(attempt).toThrow(TypeError);
+      expect(attempt).toThrow(/constructor/i);
+    });
+    it('throws an informative Error if fetched data is not a string', () => {
+      const numberAttempt = () => {
+        const weather = new Weather(99);
+      }
+      const arrayAttempt = () => {
+        const weather = new Weather([ 9, 9 ]);
+      }
+      const objectAttempt = () => {
+        const weather = new Weather({ '9': 9 });
+      }
+      
+      expect(numberAttempt).toThrow(TypeError);
+      expect(numberAttempt).toThrow(/string/i);
+      expect(arrayAttempt).toThrow(/string/i);
+      expect(objectAttempt).toThrow(/string/i);
     });
   });
 

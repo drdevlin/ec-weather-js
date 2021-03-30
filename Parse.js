@@ -31,6 +31,8 @@ class Parse {
   convert() {
     const converted = xml2js(this.data, { compact: true });
 
+    if (!converted.hasOwnProperty('siteData')) throw new TypeError("Input doesn't seem to be weather data.");
+
     const mainData = converted.siteData;
     delete mainData.license;
     delete mainData.dateTime;
