@@ -1,6 +1,6 @@
 {
   "name": "ec-weather-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Javascript API for Environment Canada Weather Data",
   "main": "Weather.js",
   "scripts": {
