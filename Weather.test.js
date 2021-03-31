@@ -125,6 +125,16 @@ describe('Weather', () => {
     });
   });
 
+  describe('get date()', () => {
+    it('returns a Date object of the current date and time', () => {
+      const weather = new Weather(testdata);
+
+      const expected = new Date(Date.UTC(2021, 0, 27, 15, 0));
+
+      expect(weather.date).toMatchObject(expected);
+    });
+  });
+
   describe('forecast(date)', () => {
     describe('when passed a string', () => {
       it('returns all forecast data for a given day of the week', () => {
