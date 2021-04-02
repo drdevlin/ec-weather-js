@@ -38,6 +38,45 @@ class ForecastArray extends Array {
       });
     }
   }
+
+  get winds() {
+    if (this[0].hasOwnProperty('day')) {
+      return this.map(el => {
+        const mapped = (el.winds) ? 
+          {
+            day: el.day,
+            speed: Number(el.winds.wind[1].speed.value),
+            gust: Number(el.winds.wind[1].gust.value),
+            direction: el.winds.wind[1].direction
+          } :
+          {
+            day: el.day,
+            speed: null,
+            gust: null,
+            direction: null
+          };
+        return mapped;
+      });
+    }
+    if (this[0].hasOwnProperty('hour')) {
+      return this.map(el => {
+        const mapped = (el.wind) ? 
+          {
+            hour: el.hour,
+            speed: Number(el.wind.speed.value),
+            gust: (el.wind.gust.hasOwnProperty('value')) ? Number(el.wind.gust.value) : null,
+            direction: el.wind.direction.value
+          } :
+          {
+            hour: el.hour,
+            speed: null,
+            gust: null,
+            direction: null
+          };
+        return mapped;
+      });
+    }
+  }
 }
 
 module.exports = ForecastArray;
