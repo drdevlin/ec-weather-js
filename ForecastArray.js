@@ -5,8 +5,8 @@ class ForecastArray extends Array {
         return { 
           day: el.day,
           value: Number(el.temperatures.temperature.value),
-          humidex: (el.humidex) ? Number(el.humidex.value) : null,
-          windChill: (el.windChill) ? Number(el.windChill.calculated.value) : null
+          humidex: (el.humidex && el.humidex.hasOwnProperty('value')) ? Number(el.humidex.value) : null,
+          windChill: (el.windChill && el.windChill.hasOwnProperty('calculated')) ? Number(el.windChill.calculated.value) : null
         };
       });
     }
@@ -15,8 +15,8 @@ class ForecastArray extends Array {
         return { 
           hour: el.hour, 
           value: Number(el.temperature.value) ,
-          humidex: (el.humidex.hasOwnProperty('value')) ? Number(el.humidex.value) : null,
-          windChill: (el.windChill.hasOwnProperty('value')) ? Number(el.windChill.value) : null
+          humidex: (el.humidex && el.humidex.hasOwnProperty('value')) ? Number(el.humidex.value) : null,
+          windChill: (el.windChill && el.windChill.hasOwnProperty('value')) ? Number(el.windChill.value) : null
         };
       });
     }
