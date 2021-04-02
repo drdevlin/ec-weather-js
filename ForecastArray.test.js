@@ -7,6 +7,8 @@ const hourlyForecast = new ForecastArray();
 weeklyForecast.push({ 
   day: 'monday',
   temperatures: { temperature: { value: '1' }},
+  humidex: { value: '30' },
+  windChill: { calculated: { value: '-20' }},
   abbreviatedForecast: { pop: { value: '60' }},
   precipitation: { precipType: { value: 'rain' }},
   winds: { wind: [{}, { speed: { value: '20' }, gust: { value: '40' }, direction: 'NW' }]}
@@ -14,6 +16,8 @@ weeklyForecast.push({
 hourlyForecast.push({ 
   hour: '202101271600',
   temperature: { value: '1' },
+  humidex: { value: '30' },
+  windChill: { value: '-20' },
   condition: 'Rain',
   lop: { value: '60' },
   wind: { speed: { value: '20'}, gust: { value: '40'}, direction: { value: 'NW' }}
@@ -31,8 +35,8 @@ describe('ForecastArray()', () => {
   });
   describe('get temperatures()', () => {
     it('returns an array of temperatures', () => {
-      expect(weeklyForecast.temperatures).toMatchObject([{ day: 'monday', value: 1 }]);
-      expect(hourlyForecast.temperatures).toMatchObject([{ hour: '202101271600', value: 1 }]);
+      expect(weeklyForecast.temperatures).toMatchObject([{ day: 'monday', value: 1, humidex: 30, windChill: -20 }]);
+      expect(hourlyForecast.temperatures).toMatchObject([{ hour: '202101271600', value: 1, humidex: 30, windChill: -20 }]);
     });
   });
   describe('get precipitation()', () => {
