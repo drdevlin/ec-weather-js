@@ -47,6 +47,9 @@ class Weather {
     return this._data.currentConditions;
   }
 
+  /**
+   * @returns {<ForecastArray>} An array of the weekly forecast
+   */
   get weekly() {
     const result = new ForecastArray;
     let i = 0;
@@ -58,6 +61,9 @@ class Weather {
     return result;
   }
 
+  /**
+   * @returns {<ForecastArray} An array of the hourly forecast
+   */
   get hourly() {
     const result = new ForecastArray;
     let i = 0;
