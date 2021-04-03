@@ -1,4 +1,12 @@
+/**
+ * @classdesc An extended Array with getters for extracting specific forecast data.
+ * Getters: temperatures, precipitation, winds
+ */
 class ForecastArray extends Array {
+
+  /**
+   * @returns {Object[]} An array of temperature data: value (actual temp), humidex, windChill.
+   */
   get temperatures() {
     if (this[0].hasOwnProperty('day')) {
       return this.map(el => {
@@ -22,6 +30,11 @@ class ForecastArray extends Array {
     }
   }
 
+  /**
+   * @returns {Object[]} An array of precipitation data.
+   * Weekly contains pop (chance of) and type.
+   * Hourly contains lop (chance of) and condition.
+   */
   get precipitation() {
     if (this[0].hasOwnProperty('day')) {
       return this.map(el => {
@@ -43,6 +56,9 @@ class ForecastArray extends Array {
     }
   }
 
+  /**
+   * @returns {Object[]} An array of wind data: speed, gust, direction.
+   */
   get winds() {
     if (this[0].hasOwnProperty('day')) {
       return this.map(el => {
