@@ -1,3 +1,5 @@
+const nestedProp = require("./helpers/nestedProp");
+
 /**
  * @classdesc An extended Array with getters for extracting specific forecast data.
  * Getters: temperatures, precipitation, winds
@@ -9,22 +11,22 @@ class ForecastArray extends Array {
    */
   get temperatures() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(el => {
+      return this.map(forecast => {
         return { 
-          day: el.day,
-          value: Number(el.temperatures.temperature.value),
-          humidex: (el.humidex && el.humidex.hasOwnProperty('value')) ? Number(el.humidex.value) : null,
-          windChill: (el.windChill && el.windChill.hasOwnProperty('calculated')) ? Number(el.windChill.calculated.value) : null
+          day: forecast.day,
+          value: nestedProp(forecast, 'temperatures', 'temperature', 'value'),
+          humidex: nestedProp(forecast, 'humidex', 'value'),
+          windChill: nestedProp(forecast, 'windChill', 'calculated', 'value')
         };
       });
     }
     if (this[0].hasOwnProperty('hour')) {
-      return this.map(el => {
+      return this.map(forecast => {
         return { 
-          hour: el.hour, 
-          value: Number(el.temperature.value) ,
-          humidex: (el.humidex && el.humidex.hasOwnProperty('value')) ? Number(el.humidex.value) : null,
-          windChill: (el.windChill && el.windChill.hasOwnProperty('value')) ? Number(el.windChill.value) : null
+          hour: forecast.hour, 
+          value: nestedProp(forecast, 'temperature', 'value'),
+          humidex: nestedProp(forecast, 'humidex', 'value'),
+          windChill: nestedProp(forecast, 'windChill', 'value')
         };
       });
     }
@@ -37,20 +39,20 @@ class ForecastArray extends Array {
    */
   get precipitation() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(el => {
+      return this.map(forecast => {
         return {
-          day: el.day,
-          pop: (el.abbreviatedForecast.pop.value) ? Number(el.abbreviatedForecast.pop.value) : 0,
-          type: (el.precipitation.precipType.value) ? el.precipitation.precipType.value : null
+          day: forecast.day,
+          pop: nestedProp(forecast, 'abbreviatedForecast', 'pop', 'value'),
+          type: nestedProp(forecast, 'precipitation', 'precipType', 'value')
         };
       });
     }
     if (this[0].hasOwnProperty('hour')) {
-      return this.map(el => {
+      return this.map(forecast => {
         return {
-          hour: el.hour,
-          condition: el.condition,
-          lop: (el.lop.value) ? Number(el.lop.value) : 0,
+          hour: forecast.hour,
+          condition: forecast.condition,
+          lop: nestedProp(forecast, 'lop', 'value')
         };
       });
     }
@@ -61,39 +63,23 @@ class ForecastArray extends Array {
    */
   get winds() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(el => {
-        const mapped = (el.winds) ? 
-          {
-            day: el.day,
-            speed: Number(el.winds.wind[1].speed.value),
-            gust: Number(el.winds.wind[1].gust.value),
-            direction: el.winds.wind[1].direction
-          } :
-          {
-            day: el.day,
-            speed: null,
-            gust: null,
-            direction: null
-          };
-        return mapped;
+      return this.map(forecast => {
+        return {
+          day: forecast.day,
+          speed: nestedProp(forecast, 'winds', 'wind', 1, 'speed', 'value'),
+          gust: nestedProp(forecast, 'winds', 'wind', 1, 'gust', 'value'),
+          direction: nestedProp(forecast, 'winds', 'wind', 1, 'direction')
+        }
       });
     }
     if (this[0].hasOwnProperty('hour')) {
-      return this.map(el => {
-        const mapped = (el.wind) ? 
-          {
-            hour: el.hour,
-            speed: Number(el.wind.speed.value),
-            gust: (el.wind.gust.hasOwnProperty('value')) ? Number(el.wind.gust.value) : null,
-            direction: el.wind.direction.value
-          } :
-          {
-            hour: el.hour,
-            speed: null,
-            gust: null,
-            direction: null
-          };
-        return mapped;
+      return this.map(forecast => {
+        return {
+          hour: forecast.hour,
+          speed: nestedProp(forecast, 'wind', 'speed', 'value'),
+          gust: nestedProp(forecast, 'wind', 'gust', 'value'),
+          direction: nestedProp(forecast, 'wind', 'direction', 'value')
+        }
       });
     }
   }

@@ -35,20 +35,20 @@ describe('ForecastArray()', () => {
   });
   describe('get temperatures()', () => {
     it('returns an array of temperatures', () => {
-      expect(weeklyForecast.temperatures).toMatchObject([{ day: 'monday', value: 1, humidex: 30, windChill: -20 }]);
-      expect(hourlyForecast.temperatures).toMatchObject([{ hour: '202101271600', value: 1, humidex: 30, windChill: -20 }]);
+      expect(weeklyForecast.temperatures).toMatchObject([{ day: 'monday', value: '1', humidex: '30', windChill: '-20' }]);
+      expect(hourlyForecast.temperatures).toMatchObject([{ hour: '202101271600', value: '1', humidex: '30', windChill: '-20' }]);
     });
   });
   describe('get precipitation()', () => {
     it('returns an array of precipitation data', () => {
-      expect(weeklyForecast.precipitation).toMatchObject([{ day: 'monday', pop: 60, type: 'rain' }]);
-      expect(hourlyForecast.precipitation).toMatchObject([{ hour: '202101271600', condition: 'Rain', lop: 60 }]);
+      expect(weeklyForecast.precipitation).toMatchObject([{ day: 'monday', pop: '60', type: 'rain' }]);
+      expect(hourlyForecast.precipitation).toMatchObject([{ hour: '202101271600', condition: 'Rain', lop: '60' }]);
     });
   });
   describe('get winds()', () => {
     it('returns an array of wind data', () => {
-      expect(weeklyForecast.winds).toMatchObject([{ day: 'monday', speed: 20, gust: 40, direction: 'NW' }])
-      expect(hourlyForecast.winds).toMatchObject([{ hour: '202101271600', speed: 20, gust: 40, direction: 'NW' }]);
+      expect(weeklyForecast.winds).toMatchObject([{ day: 'monday', speed: '20', gust: '40', direction: 'NW' }]);
+      expect(hourlyForecast.winds).toMatchObject([{ hour: '202101271600', speed: '20', gust: '40', direction: 'NW' }]);
     })
   })
 });
