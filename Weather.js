@@ -4,6 +4,7 @@
  */
 
 const Parse = require("./Parse");
+const ForecastArray = require('./ForecastArray');
 
 /**
  * @classdesc A Weather instance has a number of methods for extracting specific types of data
@@ -45,6 +46,46 @@ class Weather {
   get current() {
     return this._data.currentConditions;
   }
+
+  /**
+   * @returns {<ForecastArray>} An array of the weekly forecast
+   */
+  get weekly() {
+    const result = new ForecastArray;
+    let i = 0;
+    for (let [ key, value ] of this._data.forecast) {
+      if (i >= 13) break;
+      result.push({ day: key, ...value });
+      i++;
+    }
+    return result;
+  }
+
+  /**
+   * @returns {<ForecastArray} An array of the hourly forecast
+   */
+  get hourly() {
+    const result = new ForecastArray;
+    let i = 0;
+    for (let [ key, value ] of this._data.forecast) {
+      if (i >= 13) result.push({ hour: key, ...value });
+      i++;
+    }
+    return result;
+  }
+
+  /**
+   * @returns {<Date>} The date of the current forecast
+   */
+  get date() {
+    return new Date(Date.UTC(
+      Number(this._data.currentConditions.dateTime[0].year),
+      Number(this._data.currentConditions.dateTime[0].month.value) - 1,
+      Number(this._data.currentConditions.dateTime[0].day.value),
+      Number(this._data.currentConditions.dateTime[0].hour),
+      Number(this._data.currentConditions.dateTime[0].minute)
+    ));
+  }
   
   /**
    * Retrieves all forecast data for a given date.
@@ -75,21 +116,10 @@ class Weather {
 
       // Otherwise,
       } else {
-        // determine at which time the data starts
-        const yearOfCurrentConditions = Number(this._data.currentConditions.dateTime[0].year);
-        const monthOfCurrentConditions = Number(this._data.currentConditions.dateTime[0].month.value) - 1;
-        const dateOfCurrentConditions = Number(this._data.currentConditions.dateTime[0].day.value);
-        const hourOfCurrentConditions = Number(this._data.currentConditions.dateTime[0].hour);
-        const startTime = new Date(Date.UTC(
-          yearOfCurrentConditions,
-          monthOfCurrentConditions,
-          dateOfCurrentConditions,
-          hourOfCurrentConditions
-        ));
-        // determine at which time the data ends
-        const endTime = new Date(startTime.getTime() + (1000 * 60 * 60 * 24 * 7));
-        // and check whether the date given is within range.
-        const isInRange = date.getTime() >= startTime.getTime() && date.getTime() <= endTime.getTime();
+        // check whether the date given is within range.
+        // this.date = startTime
+        const endTime = new Date(this.date.getTime() + (1000 * 60 * 60 * 24 * 7));
+        const isInRange = date.getTime() >= this.date.getTime() && date.getTime() <= endTime.getTime();
         
         // If it is,
         if (isInRange) {

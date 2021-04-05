@@ -1,6 +1,6 @@
 # ECWeatherJS
 
-The unofficial, javascript Environment Canada weather API.
+The Unofficial, JavaScript Environment Canada Weather API.
 
 ## Installation
 
@@ -35,12 +35,33 @@ Or the forecast for a specific date:
 weather.forecast(date)
 ```
 
+### Weekly and Hourly Forecasts
+
+```js
+weather.weekly
+```
+and
+```js
+weather.hourly
+```
+will return an array of the respective forecasts.
+
+Chain ```.temperatures```, ```.precipitation```, and ```.winds``` to further narrow the array.
+
+For example,
+```js
+weather.hourly.precipitation
+```
+returns an array of precipitation forecasts by the hour.
+
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue first to discuss.
 
-Please make sure to update tests as appropriate.
+Make sure to update tests as appropriate.
+
+[CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE.md)
