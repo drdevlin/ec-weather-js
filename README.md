@@ -46,7 +46,7 @@ weather.hourly
 ```
 will return an array of the respective forecasts.
 
-Chain ```.temperatures```, ```.precipitation```, and ```.wind``` to further narrow the array.
+Chain ```.temperatures```, ```.precipitation```, and ```.winds``` to further narrow the array.
 
 For example,
 ```js
