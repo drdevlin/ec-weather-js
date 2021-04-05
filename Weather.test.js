@@ -141,6 +141,14 @@ describe('Weather', () => {
 
       expect(weather.hourly).toBeInstanceOf(ForecastArray);
       expect(weather.hourly.length).toStrictEqual(24);
+
+  describe('get date()', () => {
+    it('returns a Date object of the current date and time', () => {
+      const weather = new Weather(testdata);
+
+      const expected = new Date(Date.UTC(2021, 0, 27, 15, 0));
+
+      expect(weather.date).toMatchObject(expected);
     });
   });
 
