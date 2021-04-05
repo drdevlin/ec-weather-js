@@ -52,7 +52,7 @@ For example,
 ```js
 weather.hourly.precipitation
 ```
-returns an array precipitation forecasts by the hour.
+returns an array of precipitation forecasts by the hour.
 
 ## Contributing
 
