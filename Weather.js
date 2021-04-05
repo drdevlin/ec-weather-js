@@ -74,6 +74,9 @@ class Weather {
     return result;
   }
 
+  /**
+   * @returns {<Date>} The date of the current forecast
+   */
   get date() {
     return new Date(Date.UTC(
       Number(this._data.currentConditions.dateTime[0].year),
