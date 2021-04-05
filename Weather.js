@@ -72,6 +72,7 @@ class Weather {
       i++;
     }
     return result;
+  }
 
   get date() {
     return new Date(Date.UTC(

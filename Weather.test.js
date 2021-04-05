@@ -141,6 +141,8 @@ describe('Weather', () => {
 
       expect(weather.hourly).toBeInstanceOf(ForecastArray);
       expect(weather.hourly.length).toStrictEqual(24);
+    });
+  });
 
   describe('get date()', () => {
     it('returns a Date object of the current date and time', () => {
