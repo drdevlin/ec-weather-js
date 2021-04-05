@@ -1,5 +1,6 @@
 const Weather = require('./Weather');
 const { testdata } = require('./testdata');
+const ForecastArray = require('./ForecastArray');
 
 const fetchedData = `
   <?xml version='1.0' encoding='ISO-8859-1'?>
@@ -124,6 +125,22 @@ describe('Weather', () => {
       expect(weather.current).toMatchObject(expected);
     });
   });
+
+  describe('get weekly()', () => {
+    it('returns a ForecastArray of the weekly weather data', () => {
+      const weather = new Weather(testdata);
+
+      expect(weather.weekly).toBeInstanceOf(ForecastArray);
+      expect(weather.weekly.length).toStrictEqual(13);
+    });
+  });
+
+  describe('get hourly()', () => {
+    it('returns a ForecastArray of the hourly weather data', () => {
+      const weather = new Weather(testdata);
+
+      expect(weather.hourly).toBeInstanceOf(ForecastArray);
+      expect(weather.hourly.length).toStrictEqual(24);
 
   describe('get date()', () => {
     it('returns a Date object of the current date and time', () => {

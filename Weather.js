@@ -4,6 +4,7 @@
  */
 
 const Parse = require("./Parse");
+const ForecastArray = require('./ForecastArray');
 
 /**
  * @classdesc A Weather instance has a number of methods for extracting specific types of data
@@ -45,6 +46,32 @@ class Weather {
   get current() {
     return this._data.currentConditions;
   }
+
+  /**
+   * @returns {<ForecastArray>} An array of the weekly forecast
+   */
+  get weekly() {
+    const result = new ForecastArray;
+    let i = 0;
+    for (let [ key, value ] of this._data.forecast) {
+      if (i >= 13) break;
+      result.push({ day: key, ...value });
+      i++;
+    }
+    return result;
+  }
+
+  /**
+   * @returns {<ForecastArray} An array of the hourly forecast
+   */
+  get hourly() {
+    const result = new ForecastArray;
+    let i = 0;
+    for (let [ key, value ] of this._data.forecast) {
+      if (i >= 13) result.push({ hour: key, ...value });
+      i++;
+    }
+    return result;
 
   get date() {
     return new Date(Date.UTC(
