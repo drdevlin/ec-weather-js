@@ -35,6 +35,25 @@ Or the forecast for a specific date:
 weather.forecast(date)
 ```
 
+### Weekly and Hourly Forecasts
+
+```js
+weather.weekly
+```
+and
+```js
+weather.hourly
+```
+will return an array of the respective forecasts.
+
+Chain ```.temperatures```, ```.precipitation```, and ```.wind``` to further narrow the array.
+
+For example,
+```js
+weather.hourly.precipitation
+```
+returns an array precipitation forecasts by the hour.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss.
