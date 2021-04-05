@@ -129,7 +129,7 @@ describe('Weather', () => {
   describe('get weekly()', () => {
     it('returns a ForecastArray of the weekly weather data', () => {
       const weather = new Weather(testdata);
-
+      
       expect(weather.weekly).toBeInstanceOf(ForecastArray);
       expect(weather.weekly.length).toStrictEqual(13);
     });
