@@ -1,6 +1,6 @@
 # ECWeatherJS
 
-The unofficial, javascript Environment Canada weather API.
+The Unofficial, JavaScript Environment Canada Weather API.
 
 ## Installation
 
@@ -37,9 +37,11 @@ weather.forecast(date)
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue first to discuss.
 
-Please make sure to update tests as appropriate.
+Make sure to update tests as appropriate.
+
+[CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
