@@ -54,7 +54,7 @@ class Weather {
     const result = new ForecastArray;
     let i = 0;
     for (let [ key, value ] of this._data.forecast) {
-      if (i >= 13) break;
+      if (!Number.isNaN(Number(key))) break; // breaks if the key is a number, thus not a week name
       result.push({ day: key, ...value });
       i++;
     }
@@ -68,7 +68,7 @@ class Weather {
     const result = new ForecastArray;
     let i = 0;
     for (let [ key, value ] of this._data.forecast) {
-      if (i >= 13) result.push({ hour: key, ...value });
+      if (!Number.isNaN(Number(key))) result.push({ hour: key, ...value }); // pushes if the key is a number, thus a timestamp
       i++;
     }
     return result;
