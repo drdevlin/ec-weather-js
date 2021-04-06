@@ -51,7 +51,7 @@ class Weather {
    * @returns {<ForecastArray>} An array of the weekly forecast
    */
   get weekly() {
-    const result = new ForecastArray;
+    const result = new ForecastArray();
     if (!this._data?.forecast) return result;
 
     for (let [ key, value ] of this._data.forecast) {
@@ -65,7 +65,7 @@ class Weather {
    * @returns {<ForecastArray} An array of the hourly forecast
    */
   get hourly() {
-    const result = new ForecastArray;
+    const result = new ForecastArray();
     if (!this._data?.forecast) return result;
 
     for (let [ key, value ] of this._data.forecast) {
