@@ -69,7 +69,7 @@ class ForecastArray extends Array {
           speed: nestedProp(forecast, 'winds', 'wind', 1, 'speed', 'value'),
           gust: nestedProp(forecast, 'winds', 'wind', 1, 'gust', 'value'),
           direction: nestedProp(forecast, 'winds', 'wind', 1, 'direction')
-        }
+        };
       });
     }
     if (this[0].hasOwnProperty('hour')) {
@@ -79,7 +79,7 @@ class ForecastArray extends Array {
           speed: nestedProp(forecast, 'wind', 'speed', 'value'),
           gust: nestedProp(forecast, 'wind', 'gust', 'value'),
           direction: nestedProp(forecast, 'wind', 'direction', 'value')
-        }
+        };
       });
     }
   }

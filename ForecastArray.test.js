@@ -49,6 +49,6 @@ describe('ForecastArray()', () => {
     it('returns an array of wind data', () => {
       expect(weeklyForecast.winds).toMatchObject([{ day: 'monday', speed: '20', gust: '40', direction: 'NW' }]);
       expect(hourlyForecast.winds).toMatchObject([{ hour: '202101271600', speed: '20', gust: '40', direction: 'NW' }]);
-    })
-  })
+    });
+  });
 });

@@ -6,6 +6,6 @@ const nestedProp = (obj, ...props) => {
   } else {
     return null;
   }
-}
+};
 
 module.exports = nestedProp;
