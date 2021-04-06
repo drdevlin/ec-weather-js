@@ -10,7 +10,7 @@ npm install ec-weather-js
 
 ## Usage
 
-First, fetch weather data for a certain station from Environment Canada's RSS feed. This will provide XML data, so parse as text.
+First, fetch weather data for a certain station from Environment Canada's [XML weather data](https://dd.weather.gc.ca/citypage_weather/xml/), and parse as text.
 
 (This library does not fetch data.)
 
@@ -46,7 +46,7 @@ weather.hourly
 ```
 will return an array of the respective forecasts.
 
-Chain ```.temperatures```, ```.precipitation```, and ```.winds``` to further narrow the array.
+Chain ```.temperatures```, ```.precipitation```, or ```.winds``` to further narrow the array.
 
 For example,
 ```js
