@@ -128,11 +128,15 @@ class Parse {
     });
     result.regionalNormals = result.forecastGroup.regionalNormals;
     delete result.forecastGroup;
-    result.hourlyForecastGroup.hourlyForecast.forEach(el => {
-      const copy = { ...el };
-      delete copy.dateTimeUTC;
-      forecast.set(el.dateTimeUTC, copy);
-    });
+    const hourlyForecastGroup = result.hourlyForecastGroup;
+    if (hourlyForecastGroup) {
+      hourlyForecastGroup.hourlyForecast.forEach((el) => {
+        const copy = { ...el };
+        delete copy.dateTimeUTC;
+        forecast.set(el.dateTimeUTC, copy);
+      });
+      delete result.hourlyForecastGroup;
+    }
     delete result.hourlyForecastGroup;
     result.forecast = forecast;
     return new Parse(result);
