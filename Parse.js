@@ -121,14 +121,14 @@ class Parse {
   restructure() {
     const result = { ...this.data };
     const forecast = new Map();
-    result.forecastGroup.forecast.forEach(el => {
+    result?.forecastGroup?.forecast.forEach(el => {
       const copy = { ...el };
       delete copy.period;
       forecast.set(el.period.value.toLowerCase(), copy);
     });
-    result.regionalNormals = result.forecastGroup.regionalNormals;
+    result.regionalNormals = result?.forecastGroup?.regionalNormals || null;
     delete result.forecastGroup;
-    result.hourlyForecastGroup.hourlyForecast.forEach(el => {
+    result?.hourlyForecastGroup?.hourlyForecast.forEach(el => {
       const copy = { ...el };
       delete copy.dateTimeUTC;
       forecast.set(el.dateTimeUTC, copy);
