@@ -11,24 +11,24 @@ class ForecastArray extends Array {
    */
   get temperatures() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(forecast => {
-        return { 
+      return this.map(forecast => (
+        { 
           day: forecast.day,
-          value: nestedProp(forecast, 'temperatures', 'temperature', 'value'),
-          humidex: nestedProp(forecast, 'humidex', 'value'),
-          windChill: nestedProp(forecast, 'windChill', 'calculated', 'value')
-        };
-      });
+          value: forecast.temperatures?.temperature?.value,
+          humidex: forecast.humidex?.value,
+          windChill: forecast.windChill?.calculated?.value
+        }
+      ));
     }
     if (this[0].hasOwnProperty('hour')) {
-      return this.map(forecast => {
-        return { 
+      return this.map(forecast => (
+        { 
           hour: forecast.hour, 
-          value: nestedProp(forecast, 'temperature', 'value'),
-          humidex: nestedProp(forecast, 'humidex', 'value'),
-          windChill: nestedProp(forecast, 'windChill', 'value')
-        };
-      });
+          value: forecast.temperature?.value,
+          humidex: forecast.humidex?.value,
+          windChill: forecast.windChill?.value
+        }
+      ));
     }
   }
 
@@ -39,22 +39,22 @@ class ForecastArray extends Array {
    */
   get precipitation() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(forecast => {
-        return {
+      return this.map(forecast => (
+        {
           day: forecast.day,
-          pop: nestedProp(forecast, 'abbreviatedForecast', 'pop', 'value'),
-          type: nestedProp(forecast, 'precipitation', 'precipType', 'value')
-        };
-      });
+          pop: forecast.abbreviatedForecast?.pop?.value,
+          type: forecast.precipitation?.precipType?.value
+        }
+      ));
     }
     if (this[0].hasOwnProperty('hour')) {
-      return this.map(forecast => {
-        return {
+      return this.map(forecast => (
+        {
           hour: forecast.hour,
           condition: forecast.condition,
-          lop: nestedProp(forecast, 'lop', 'value')
-        };
-      });
+          lop: forecast.lop?.value
+        }
+      ));
     }
   }
 
@@ -63,24 +63,24 @@ class ForecastArray extends Array {
    */
   get winds() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(forecast => {
-        return {
+      return this.map(forecast => (
+        {
           day: forecast.day,
-          speed: nestedProp(forecast, 'winds', 'wind', 1, 'speed', 'value'),
-          gust: nestedProp(forecast, 'winds', 'wind', 1, 'gust', 'value'),
-          direction: nestedProp(forecast, 'winds', 'wind', 1, 'direction')
+          speed: forecast.winds?.wind?.[1]?.speed?.value,
+          gust: forecast.winds?.wind?.[1]?.gust?.value,
+          direction: forecast.winds?.wind?.[1]?.direction
         }
-      });
+      ));
     }
     if (this[0].hasOwnProperty('hour')) {
-      return this.map(forecast => {
-        return {
+      return this.map(forecast => (
+        {
           hour: forecast.hour,
-          speed: nestedProp(forecast, 'wind', 'speed', 'value'),
-          gust: nestedProp(forecast, 'wind', 'gust', 'value'),
-          direction: nestedProp(forecast, 'wind', 'direction', 'value')
+          speed: forecast.wind?.speed?.value,
+          gust: forecast.wind?.gust?.value,
+          direction: forecast.wind?.direction?.value
         }
-      });
+      ));
     }
   }
 }
