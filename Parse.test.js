@@ -125,5 +125,70 @@ describe('Parse(data)', () => {
 
       expect(parse.restructure(input)).toMatchObject(expectedResult);
     });
+    describe('when no weekly forecasts', () => {
+      it('returns null regional normals and a partial forecast map', () => {
+        const input = {
+          hourlyForecastGroup: {
+            hourlyForecast: [
+              { dateTimeUTC: 'baz', otherProp: 'bang' },
+              { dateTimeUTC: 'goo', otherProp: 'clang' }
+            ]
+          }
+        };
+
+        const expectedForecastMap = new Map();
+        expectedForecastMap.set('baz', { otherProp: 'bang' });
+        expectedForecastMap.set('goo', { otherProp: 'clang' });
+
+        const expectedResult = new Parse({
+          regionalNormals: null,
+          forecast: expectedForecastMap
+        });
+
+        const parse = new Parse(input);
+
+        expect(parse.restructure(input)).toMatchObject(expectedResult);
+      });
+    });
+    describe('when no hourly forecasts', () => {
+      it('returns a partial forecast map', () => {
+        const input = {
+          forecastGroup: {
+            regionalNormals: { regional: 'normals' },
+            forecast: [ 
+              { period: { value: 'foo' }, otherProp: 'bing' },
+              { period: { value: 'bar' }, otherProp: 'bong' }
+            ]
+          }
+        };
+  
+        const expectedForecastMap = new Map();
+        expectedForecastMap.set('foo', { otherProp: 'bing' });
+        expectedForecastMap.set('bar', { otherProp: 'bong' });
+  
+        const expectedResult = new Parse({
+          regionalNormals: { regional: 'normals' },
+          forecast: expectedForecastMap
+        });
+  
+        const parse = new Parse(input);
+  
+        expect(parse.restructure(input)).toMatchObject(expectedResult);
+      });
+    });
+    describe('when neither forecasts', () => {
+      it('returns null regional normals and an empty forecast map', () => {
+        const input = { /* no forecastGroup or hourlyForecastGroup */ };
+  
+        const expectedResult = new Parse({
+          regionalNormals: null,
+          forecast: new Map()
+        });
+  
+        const parse = new Parse(input);
+  
+        expect(parse.restructure(input)).toMatchObject(expectedResult);
+      });
+    });
   });
 });
