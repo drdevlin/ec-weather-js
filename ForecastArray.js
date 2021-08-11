@@ -1,5 +1,3 @@
-const nestedProp = require("./helpers/nestedProp");
-
 /**
  * @classdesc An extended Array with getters for extracting specific forecast data.
  * Getters: temperatures, precipitation, winds
