@@ -82,12 +82,13 @@ class Weather {
    * @returns {<Date>} The date of the current forecast
    */
   get date() {
+    const dateTime = this._data?.currentConditions?.dateTime?.[0] || {};
     return new Date(Date.UTC(
-      Number(this._data?.currentConditions?.dateTime?.[0]?.year),
-      Number(this._data?.currentConditions?.dateTime?.[0]?.month?.value) - 1,
-      Number(this._data?.currentConditions?.dateTime?.[0]?.day?.value),
-      Number(this._data?.currentConditions?.dateTime?.[0]?.hour),
-      Number(this._data?.currentConditions?.dateTime?.[0]?.minute)
+      Number(dateTime.year),
+      Number(dateTime.month?.value) - 1,
+      Number(dateTime.day?.value),
+      Number(dateTime.hour),
+      Number(dateTime.minute)
     ));
   }
   
