@@ -44,7 +44,7 @@ class Weather {
    * @returns {Object} All current conditions.
    */
   get current() {
-    return this._data.currentConditions;
+    return this._data?.currentConditions;
   }
 
   /**
@@ -52,6 +52,8 @@ class Weather {
    */
   get weekly() {
     const result = new ForecastArray;
+    if (!this._data?.forecast) return result;
+
     let i = 0;
     for (let [ key, value ] of this._data.forecast) {
       if (!Number.isNaN(Number(key))) break; // breaks if the key is a number, thus not a week name
@@ -66,6 +68,8 @@ class Weather {
    */
   get hourly() {
     const result = new ForecastArray;
+    if (!this._data?.forecast) return result;
+
     let i = 0;
     for (let [ key, value ] of this._data.forecast) {
       if (!Number.isNaN(Number(key))) result.push({ hour: key, ...value }); // pushes if the key is a number, thus a timestamp
@@ -79,11 +83,11 @@ class Weather {
    */
   get date() {
     return new Date(Date.UTC(
-      Number(this._data.currentConditions.dateTime[0].year),
-      Number(this._data.currentConditions.dateTime[0].month.value) - 1,
-      Number(this._data.currentConditions.dateTime[0].day.value),
-      Number(this._data.currentConditions.dateTime[0].hour),
-      Number(this._data.currentConditions.dateTime[0].minute)
+      Number(this._data?.currentConditions?.dateTime?.[0]?.year),
+      Number(this._data?.currentConditions?.dateTime?.[0]?.month?.value) - 1,
+      Number(this._data?.currentConditions?.dateTime?.[0]?.day?.value),
+      Number(this._data?.currentConditions?.dateTime?.[0]?.hour),
+      Number(this._data?.currentConditions?.dateTime?.[0]?.minute)
     ));
   }
   
