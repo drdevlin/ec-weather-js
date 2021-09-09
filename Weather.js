@@ -67,7 +67,7 @@ class Weather {
   }
 
   /**
-   * @returns {<ForecastArray} An array of the hourly forecast
+   * @returns {<ForecastArray>} An array of the hourly forecast
    */
   get hourly() {
     if (!this._data?.forecast) return new ForecastArray();
