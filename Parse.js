@@ -84,25 +84,21 @@ class Parse {
    */
   simplify() {
     const recurse = (data) => {
-      if (!Array.isArray(data)) {
-        // base case
-        const copy = { ...data };
-        const props = Object.entries(copy).map(el => el[0]);
-        if (props.length === 0) {
-          return null;
-        } else if (props.length === 1 && copy.hasOwnProperty('value')) {
-          return copy.value;
-        } else {
-          // recurse over other objects, including arrays
-          for (const prop in copy) {
-            if (typeof copy[prop] === 'object') copy[prop] = recurse(copy[prop]);
-          }
-          return copy;
+      // base case
+      const copy = { ...data };
+      const keys = Object.keys(copy);
+      if (keys.length === 0) return null;
+      if (keys.length === 1 && copy.hasOwnProperty('value')) return copy.value;
+      
+      // recurse over any objects
+      keys.forEach(key => {
+        if (Array.isArray(copy[key])) {
+          copy[key] = copy[key].map(el => recurse(el));
+        } else if (typeof copy[key] === 'object') {
+          copy[key] = recurse(copy[key]);
         }
-      } else {
-        // recurse over objects in array
-        return data.map(el => recurse(el));
-      }
+      });
+      return copy;
     };
     const result = recurse(this.data);
     return new Parse(result);
