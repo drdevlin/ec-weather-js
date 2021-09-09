@@ -61,14 +61,8 @@ class Parse {
          delete copy._text;
        }
 
-       // recurse over any objects
-       Object.keys(copy).forEach(key => {
-         if (Array.isArray(copy[key])) {
-           copy[key] = copy[key].map(el => recurse(el));
-         } else if (typeof copy[key] === 'object') {
-           copy[key] = recurse(copy[key]);
-         }
-       });
+       // recursion
+       recurseOverObjects(copy, recurse);
        return { ...attributesAndValue, ...copy };
     };
     const result = recurse(this.data);
@@ -90,14 +84,8 @@ class Parse {
       if (keys.length === 0) return null;
       if (keys.length === 1 && copy.hasOwnProperty('value')) return copy.value;
       
-      // recurse over any objects
-      keys.forEach(key => {
-        if (Array.isArray(copy[key])) {
-          copy[key] = copy[key].map(el => recurse(el));
-        } else if (typeof copy[key] === 'object') {
-          copy[key] = recurse(copy[key]);
-        }
-      });
+      // recursion
+      recurseOverObjects(copy, recurse);
       return copy;
     };
     const result = recurse(this.data);
@@ -133,6 +121,22 @@ class Parse {
     result.forecast = forecast;
     return new Parse(result);
   }
+}
+
+/**
+ * Helper function to recurse over elements of an array or properties on an object.
+ * Mutates the `data` parameter.
+ * @param {any} data Data from inside the `recurse` function.
+ * @param {function} recurse The `recurse` function to execute on the data.
+ */
+const recurseOverObjects = (data, recurse) => {
+  Object.keys(data).forEach(key => {
+    if (Array.isArray(data[key])) {
+      data[key] = data[key].map(el => recurse(el));
+    } else if (typeof data[key] === 'object') {
+      data[key] = recurse(data[key]);
+    }
+  });
 }
 
 module.exports = Parse;
