@@ -62,7 +62,7 @@ class Weather {
   }
 
   /**
-   * @returns {<ForecastArray} An array of the hourly forecast
+   * @returns {<ForecastArray>} An array of the hourly forecast
    */
   get hourly() {
     const result = new ForecastArray();
