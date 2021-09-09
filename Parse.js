@@ -49,27 +49,21 @@ class Parse {
    */
   normalize() {
     const recurse = (data) => {
-      if (!Array.isArray(data)) {
-        // base case
-        const copy = { ...data };
-        let attributesAndValue = {};
-        if (copy.hasOwnProperty('_attributes')) {
-          attributesAndValue = { ...copy._attributes };
-          delete copy._attributes;
-        }
-        if (copy.hasOwnProperty('_text')) {
-          attributesAndValue.value = copy._text;
-          delete copy._text;
-        }
-        // recurse over other objects, including arrays
-        for (const prop in copy) {
-          if (typeof copy[prop] === 'object') copy[prop] = recurse(copy[prop]);
-        }
-        return { ...attributesAndValue, ...copy };
-      } else {
-        // recurse over objects in array
-        return data.map(el => recurse(el));
-      }
+       // base case
+       const copy = { ...data };
+       let attributesAndValue = {};
+       if (copy.hasOwnProperty('_attributes')) {
+         attributesAndValue = { ...copy._attributes };
+         delete copy._attributes;
+       }
+       if (copy.hasOwnProperty('_text')) {
+         attributesAndValue.value = copy._text;
+         delete copy._text;
+       }
+
+       // recursion
+       recurseOverObjects(copy, recurse);
+       return { ...attributesAndValue, ...copy };
     };
     const result = recurse(this.data);
     return new Parse(result);
@@ -84,25 +78,15 @@ class Parse {
    */
   simplify() {
     const recurse = (data) => {
-      if (!Array.isArray(data)) {
-        // base case
-        const copy = { ...data };
-        const props = Object.entries(copy).map(el => el[0]);
-        if (props.length === 0) {
-          return null;
-        } else if (props.length === 1 && copy.hasOwnProperty('value')) {
-          return copy.value;
-        } else {
-          // recurse over other objects, including arrays
-          for (const prop in copy) {
-            if (typeof copy[prop] === 'object') copy[prop] = recurse(copy[prop]);
-          }
-          return copy;
-        }
-      } else {
-        // recurse over objects in array
-        return data.map(el => recurse(el));
-      }
+      // base case
+      const copy = { ...data };
+      const keys = Object.keys(copy);
+      if (keys.length === 0) return null;
+      if (keys.length === 1 && copy.hasOwnProperty('value')) return copy.value;
+      
+      // recursion
+      recurseOverObjects(copy, recurse);
+      return copy;
     };
     const result = recurse(this.data);
     return new Parse(result);
@@ -137,6 +121,22 @@ class Parse {
     result.forecast = forecast;
     return new Parse(result);
   }
+}
+
+/**
+ * Helper function to recurse over elements of an array or properties on an object.
+ * Mutates the `data` parameter.
+ * @param {any} data Data from inside the `recurse` function.
+ * @param {function} recurse The `recurse` function to execute on the data.
+ */
+const recurseOverObjects = (data, recurse) => {
+  Object.keys(data).forEach(key => {
+    if (Array.isArray(data[key])) {
+      data[key] = data[key].map(el => recurse(el));
+    } else if (typeof data[key] === 'object') {
+      data[key] = recurse(data[key]);
+    }
+  });
 }
 
 module.exports = Parse;

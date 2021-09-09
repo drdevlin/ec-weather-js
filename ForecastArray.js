@@ -61,14 +61,15 @@ class ForecastArray extends Array {
    */
   get winds() {
     if (this[0].hasOwnProperty('day')) {
-      return this.map(forecast => (
-        {
+      return this.map(forecast => {
+        const windForecast = forecast.winds?.wind?.[1];
+        return {
           day: forecast.day,
-          speed: forecast.winds?.wind?.[1]?.speed?.value,
-          gust: forecast.winds?.wind?.[1]?.gust?.value,
-          direction: forecast.winds?.wind?.[1]?.direction
+          speed: windForecast?.speed?.value,
+          gust: windForecast?.gust?.value,
+          direction: windForecast?.direction
         }
-      ));
+      });
     }
     if (this[0].hasOwnProperty('hour')) {
       return this.map(forecast => (

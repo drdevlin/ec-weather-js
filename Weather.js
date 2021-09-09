@@ -51,29 +51,25 @@ class Weather {
    * @returns {<ForecastArray>} An array of the weekly forecast
    */
   get weekly() {
-    const result = new ForecastArray;
+    const result = new ForecastArray();
     if (!this._data?.forecast) return result;
 
-    let i = 0;
     for (let [ key, value ] of this._data.forecast) {
       if (!Number.isNaN(Number(key))) break; // breaks if the key is a number, thus not a week name
       result.push({ day: key, ...value });
-      i++;
     }
     return result;
   }
 
   /**
-   * @returns {<ForecastArray} An array of the hourly forecast
+   * @returns {<ForecastArray>} An array of the hourly forecast
    */
   get hourly() {
-    const result = new ForecastArray;
+    const result = new ForecastArray();
     if (!this._data?.forecast) return result;
 
-    let i = 0;
     for (let [ key, value ] of this._data.forecast) {
       if (!Number.isNaN(Number(key))) result.push({ hour: key, ...value }); // pushes if the key is a number, thus a timestamp
-      i++;
     }
     return result;
   }
