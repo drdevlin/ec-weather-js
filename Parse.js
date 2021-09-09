@@ -49,27 +49,27 @@ class Parse {
    */
   normalize() {
     const recurse = (data) => {
-      if (!Array.isArray(data)) {
-        // base case
-        const copy = { ...data };
-        let attributesAndValue = {};
-        if (copy.hasOwnProperty('_attributes')) {
-          attributesAndValue = { ...copy._attributes };
-          delete copy._attributes;
-        }
-        if (copy.hasOwnProperty('_text')) {
-          attributesAndValue.value = copy._text;
-          delete copy._text;
-        }
-        // recurse over other objects, including arrays
-        for (const prop in copy) {
-          if (typeof copy[prop] === 'object') copy[prop] = recurse(copy[prop]);
-        }
-        return { ...attributesAndValue, ...copy };
-      } else {
-        // recurse over objects in array
-        return data.map(el => recurse(el));
-      }
+       // base case
+       const copy = { ...data };
+       let attributesAndValue = {};
+       if (copy.hasOwnProperty('_attributes')) {
+         attributesAndValue = { ...copy._attributes };
+         delete copy._attributes;
+       }
+       if (copy.hasOwnProperty('_text')) {
+         attributesAndValue.value = copy._text;
+         delete copy._text;
+       }
+
+       // recurse over any objects
+       Object.keys(copy).forEach(key => {
+         if (Array.isArray(copy[key])) {
+           copy[key] = copy[key].map(el => recurse(el));
+         } else if (typeof copy[key] === 'object') {
+           copy[key] = recurse(copy[key]);
+         }
+       });
+       return { ...attributesAndValue, ...copy };
     };
     const result = recurse(this.data);
     return new Parse(result);
