@@ -3,7 +3,7 @@
  * @module
  */
 
-const Parse = require("./Parse");
+const { convert, normalize, simplify, restructure } = require("./parse");
 const ForecastArray = require('./ForecastArray');
 
 /**
@@ -23,7 +23,13 @@ class Weather {
     if (typeof fetchedXMLWeatherData !== 'string') throw new TypeError('Argument must be a string.');
 
     this._originalXML = fetchedXMLWeatherData;
-    this._data = new Parse(this._originalXML).convert().normalize().simplify().restructure().data;
+    this._data = [
+      this._originalXML,
+      convert,
+      normalize,
+      simplify,
+      restructure
+    ].reduce((previousResult, currentFunction) => currentFunction(previousResult));
   }
 
   /**
