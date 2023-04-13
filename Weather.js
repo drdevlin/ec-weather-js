@@ -1,5 +1,5 @@
 /**
- * A javascript API for Environment Canada's weather data.
+ * A JavaScript API for Environment Canada's Weather Data
  * @module
  */
 
@@ -57,31 +57,26 @@ class Weather {
    * @returns {<ForecastArray>} An array of the weekly forecast
    */
   get weekly() {
-    const result = new ForecastArray;
-    if (!this._data?.forecast) return result;
+    if (!this._data?.forecast) return new ForecastArray();
 
-    let i = 0;
-    for (let [ key, value ] of this._data.forecast) {
-      if (!Number.isNaN(Number(key))) break; // breaks if the key is a number, thus not a week name
-      result.push({ day: key, ...value });
-      i++;
-    }
-    return result;
+    return Array.from(this._data.forecast).reduce((accumulator, [key, value]) => {
+      const isDay = Number.isNaN(Number(key));
+      if (isDay) accumulator.push({ day: key, ...value });
+      return accumulator;
+    }, new ForecastArray());
   }
 
   /**
    * @returns {<ForecastArray} An array of the hourly forecast
    */
   get hourly() {
-    const result = new ForecastArray;
-    if (!this._data?.forecast) return result;
-
-    let i = 0;
-    for (let [ key, value ] of this._data.forecast) {
-      if (!Number.isNaN(Number(key))) result.push({ hour: key, ...value }); // pushes if the key is a number, thus a timestamp
-      i++;
-    }
-    return result;
+    if (!this._data?.forecast) return new ForecastArray();
+    
+    return Array.from(this._data.forecast).reduce((accumulator, [key, value]) => {
+      const isHour = !Number.isNaN(Number(key));
+      if (isHour) accumulator.push({ day: key, ...value });
+      return accumulator;
+    }, new ForecastArray());
   }
 
   /**
@@ -109,48 +104,39 @@ class Weather {
    * @returns {Object}
    */
   forecast(date) {
-    if (typeof date !== 'string' && !(date instanceof Date)) throw new TypeError('Argument must be a string or Date instance');
+    const isStringType = typeof date === 'string';
+    const isDateType = date instanceof Date;
+    if (!isStringType && !isDateType) throw new TypeError('Argument must be a string or Date instance');
+    
     const forecastData = this._data.forecast;
+    if (isStringType) return forecastData.get(date.toLowerCase());
     
-    // First, straightforwardly retrieve the value if the key exists
-    if (typeof date === 'string') {
-      date = date.toLowerCase();
-      if (forecastData.has(date)) return forecastData.get(date);
-    }
+    // isDateType = true
     
-    if (date instanceof Date) {
-      const utcTimestamp = this._makeUTCTimestamp(date);
+    const utcTimestamp = this._makeUTCTimestamp(date);
+    if (forecastData.has(utcTimestamp)) return forecastData.get(utcTimestamp);
 
-      // Retreive the value if the timestamp is a key
-      if (forecastData.has(utcTimestamp)) {
-        return forecastData.get(utcTimestamp);
-
-      // Otherwise,
-      } else {
-        // check whether the date given is within range.
-        // this.date = startTime
-        const endTime = new Date(this.date.getTime() + (1000 * 60 * 60 * 24 * 7));
-        const isInRange = date.getTime() >= this.date.getTime() && date.getTime() <= endTime.getTime();
-        
-        // If it is,
-        if (isInRange) {
-          // determine the local date
-          const UTCOffset = Number(this._data.currentConditions.dateTime[1].UTCOffset);
-          const localDateValue = date.getTime() + (1000 * 60 * 60 * UTCOffset);
-          const localDate = new Date(localDateValue);
-          // get the hour
-          const localDateHour = localDate.getUTCHours();
-          // get the name of the day of the week
-          // and if the hour is at night, add 'night'
-          const weekday = (localDateHour >= 6 && localDateHour < 18) ? this._getWeekDay(localDate) : this._getWeekDay(localDate) + ' night';
-          // retrieve the forecast for that day of the week.
-          return forecastData.get(weekday);
-        }
-      }
-    }
+    // Since the UTC timestamp cannot be found in the forecast data,
+    // let's see if we can find the equivalent weekday.
     
-    // If the date given doesn't work for any of this, 
-    // then there's no data for that date and the method with return undefined.
+    // Is the date within the forecast range?
+    const startTime = this.date;
+    const endTime = new Date(startTime.getTime() + (1000 * 60 * 60 * 24 * 7));
+    const inRange = date.getTime() >= startTime.getTime() && date.getTime() <= endTime.getTime();
+    
+    if (!inRange) return;
+    
+    // Determine the local date.
+    const UTCOffset = Number(this._data.currentConditions.dateTime[1].UTCOffset);
+    const localDateValue = date.getTime() + (1000 * 60 * 60 * UTCOffset);
+    const localDate = new Date(localDateValue);
+    // Get the hour.
+    const localDateHour = localDate.getUTCHours();
+    // Get the name of the day of the week,
+    // and if the hour is at night, add 'night'.
+    const weekday = (localDateHour >= 6 && localDateHour < 18) ? this._getWeekDay(localDate) : this._getWeekDay(localDate) + ' night';
+    // Retrieve the forecast for that day of the week.
+    return forecastData.get(weekday);
   }
 
   /**
