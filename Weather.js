@@ -74,7 +74,7 @@ class Weather {
     
     return Array.from(this._data.forecast).reduce((accumulator, [key, value]) => {
       const isHour = !Number.isNaN(Number(key));
-      if (isHour) accumulator.push({ day: key, ...value });
+      if (isHour) accumulator.push({ hour: key, ...value });
       return accumulator;
     }, new ForecastArray());
   }
