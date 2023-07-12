@@ -130,8 +130,13 @@ describe('Weather', () => {
     it('returns a ForecastArray of the weekly weather data', () => {
       const weather = new Weather(testdata);
       
-      expect(weather.weekly).toBeInstanceOf(ForecastArray);
-      expect(weather.weekly.length).toStrictEqual(13);
+      const result = weather.weekly;
+
+      expect(result).toBeInstanceOf(ForecastArray);
+      expect(result.length).toStrictEqual(13);
+      result.forEach((forecast) => {
+        expect(forecast).toHaveProperty('day');
+      });
     });
   });
 
@@ -139,8 +144,13 @@ describe('Weather', () => {
     it('returns a ForecastArray of the hourly weather data', () => {
       const weather = new Weather(testdata);
 
-      expect(weather.hourly).toBeInstanceOf(ForecastArray);
-      expect(weather.hourly.length).toStrictEqual(24);
+      const result = weather.hourly;
+
+      expect(result).toBeInstanceOf(ForecastArray);
+      expect(result.length).toStrictEqual(24);
+      result.forEach((forecast) => {
+        expect(forecast).toHaveProperty('hour');
+      });
     });
   });
 
