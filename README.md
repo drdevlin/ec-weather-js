@@ -10,7 +10,7 @@ npm install ec-weather-js
 
 ## Usage
 
-First, fetch weather data for a certain station from Environment Canada's [XML weather data](https://dd.weather.gc.ca/citypage_weather/xml/), and parse as text.
+First, fetch weather data for a certain station from Environment Canada's [XML weather data](https://dd.weather.gc.ca/today/citypage_weather/), and parse as text.
 
 (This library does not fetch data.)
 
